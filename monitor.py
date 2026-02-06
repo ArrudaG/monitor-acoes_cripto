@@ -19,18 +19,13 @@ alertas = {
 
 def preco_crypto(symbol):
     try:
-        url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}"
+        url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
         r = requests.get(url, timeout=15)
-        print("Status Binance:", r.status_code)
-        if r.status_code != 200:
-            print("Erro Binance:", r.text)
-            return None
         data = r.json()
-        return float(data["price"])
+        return float(data["bitcoin"]["usd"])
     except Exception as e:
-        print(f"Erro ao buscar preço de {symbol}: {e}")
+        print(f"Erro ao buscar preço do BTC: {e}")
         return None
-
 
 def preco_acao(ticker):
     try:
