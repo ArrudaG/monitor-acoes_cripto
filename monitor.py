@@ -106,7 +106,7 @@ def monitor():
         if abev3 >= 14.74:
             alertas["ABEV3_LOW"] = False
 
-salvar_estados(alertas)
+salvar_estado(alertas)
 
 if __name__ == "__main__":
     monitor()
