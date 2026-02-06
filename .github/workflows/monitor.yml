@@ -22,9 +22,18 @@ jobs:
       - name: Instalar dependências
         run: pip install -r requirements.txt
 
+      - name: Commit estado
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add estado.json
+          git commit -m "Atualiza estado dos alertas" || echo "Nada para commit"
+          git push
+
       - name: Rodar monitor
         env:
           BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN }}
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      
         run: python monitor.py
