@@ -1,21 +1,24 @@
 import requests
 import os
+import json
 from email_sender import enviar_email
 
 TOKEN = os.getenv("BRAPI_TOKEN")
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
+ESTADO_FILE = "estado.json"
 
-alertas = {
-    "BTC_62700": False,
-    "BTC_70500": False,
-    "BTC_75500": False,
-    "BTC_80500": False,
-    "PETR4_LOW": False,
-    "ITSA3_LOW": False,
-    "BBDC3_LOW": False,
-    "ABEV3_LOW": False
-}
+def carregar_estado():
+    if os.path.exists(ESTADO_FILE):
+        with open(ESTADO_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def salvar_estado(alertas):
+    with open(ESTADO_FILE, "w") as f:
+        json.dump(alertas, f)
+        
+alertas = carregar_estado()
 
 def preco_crypto(symbol):
     try:
@@ -102,6 +105,8 @@ def monitor():
             alertas["ABEV3_LOW"] = True
         if abev3 >= 14.74:
             alertas["ABEV3_LOW"] = False
+
+salvar_estados(alertas)
 
 if __name__ == "__main__":
     monitor()
