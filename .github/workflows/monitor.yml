@@ -3,7 +3,7 @@ name: Monitor Acoes Cripto
 on:
   schedule:
     # Executa a cada 5 minutos das 10h às 18:59h
-    - cron: "*/5 13-21 * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
