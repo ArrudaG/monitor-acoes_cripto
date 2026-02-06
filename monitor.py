@@ -20,7 +20,7 @@ alertas = {
 def preco_crypto(symbol):
     try:
         url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}"
-        r = requests.get(url, timeout=5)
+        r = requests.get(url, timeout=15)
         return float(r.json()["price"])
     except Exception as e:
         print(f"Erro ao buscar preço de {symbol}: {e}")
@@ -30,7 +30,7 @@ def preco_acao(ticker):
     try:
         url = f"https://brapi.dev/api/quote/{ticker}"
         headers = {"Authorization": f"Bearer {TOKEN}"}
-        r = requests.get(url, headers=headers, timeout=5)
+        r = requests.get(url, headers=headers, timeout=10)
         data = r.json()
         return data["results"][0]["regularMarketPrice"]
     except Exception as e:
