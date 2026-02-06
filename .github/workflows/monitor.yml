@@ -1,0 +1,30 @@
+name: Monitor Acoes Cripto
+
+on:
+  schedule:
+    # Executa a cada 5 minutos das 10h às 18:59h
+    - cron: "*/5 10-18 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Rodar monitor
+        env:
+          BRAPI_TOKEN: ${{ secrets.BRAPI_TOKEN }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+        run: python monitor.py
