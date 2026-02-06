@@ -21,10 +21,16 @@ def preco_crypto(symbol):
     try:
         url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}"
         r = requests.get(url, timeout=15)
-        return float(r.json()["price"])
+        print("Status Binance:", r.status_code)
+        if r.status_code != 200:
+            print("Erro Binance:", r.text)
+            return None
+        data = r.json()
+        return float(data["price"])
     except Exception as e:
         print(f"Erro ao buscar preço de {symbol}: {e}")
         return None
+
 
 def preco_acao(ticker):
     try:
