@@ -20,16 +20,6 @@ def salvar_estado(alertas):
         
 alertas = carregar_estado()
 
-def preco_crypto(symbol):
-    try:
-        url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
-        r = requests.get(url, timeout=15)
-        data = r.json()
-        return float(data["bitcoin"]["usd"])
-    except Exception as e:
-        print(f"Erro ao buscar preço do BTC: {e}")
-        return None
-
 def preco_acao(ticker):
     try:
         url = f"https://brapi.dev/api/quote/{ticker}"
@@ -42,37 +32,10 @@ def preco_acao(ticker):
         return None
 
 def monitor():
-    btc = preco_crypto("BTCUSDT")
     petr4 = preco_acao("PETR4")
     itsa3 = preco_acao("ITSA3")
     bbdc3 = preco_acao("BBDC3")
     abev3 = preco_acao("ABEV3")
-
-    if btc is not None:
-        print(f"BTCUSDT: {btc}")
-        if btc < 62700 and not alertas["BTC_62700"]:
-            enviar_email("BTC abaixo de 62700", f"Preço: {btc}", EMAIL_USER, EMAIL_PASS)
-            alertas["BTC_62700"] = True
-        if btc >= 62700:
-            alertas["BTC_62700"] = False
-
-        if btc > 70500 and not alertas["BTC_70500"]:
-            enviar_email("BTC acima de 70500", f"Preço: {btc}", EMAIL_USER, EMAIL_PASS)
-            alertas["BTC_70500"] = True
-        if btc <= 70500:
-            alertas["BTC_70500"] = False
-
-        if btc > 75500 and not alertas["BTC_75500"]:
-            enviar_email("BTC acima de 75500", f"Preço: {btc}", EMAIL_USER, EMAIL_PASS)
-            alertas["BTC_75500"] = True
-        if btc <= 75500:
-            alertas["BTC_75500"] = False
-
-        if btc > 80500 and not alertas["BTC_80500"]:
-            enviar_email("BTC acima de 80500", f"Preço: {btc}", EMAIL_USER, EMAIL_PASS)
-            alertas["BTC_80500"] = True
-        if btc <= 80500:
-            alertas["BTC_80500"] = False
 
     if petr4 is not None:
         print(f"PETR4: {petr4}")
